@@ -17,6 +17,9 @@
         button { padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
         button:hover { background: #0056b3; }
         #timeLog { margin-top: 10px; }
+        .badge { display: inline-block; padding: 5px 10px; margin: 5px; border-radius: 15px; }
+        .locked { background: #ccc; color: #666; }
+        .unlocked { background: #4caf50; color: white; }
     </style>
 </head>
 <body>
@@ -25,17 +28,49 @@
     <!-- Dashboard -->
     <div class="section">
         <h2>Dashboard</h2>
-        <p>Progress: <span id="progressPercent">10%</span></p>
-        <div class="progress-bar"><div class="progress" style="width: 10%;"></div></div>
+        <p>Progress: <span id="progressPercent">0%</span> (0/149 hours)</p>
+        <div class="progress-bar"><div class="progress" style="width: 0%;"></div></div>
         <p>Welcome! You're on your way to becoming an EV maintenance expert.</p>
+    </div>
+
+    <!-- Skills -->
+    <div class="section">
+        <h2>Skills & Badges</h2>
+        <ul id="skillsList">
+            <li>EV Fundamentals <span class="badge locked" id="badge-ev-fundamentals">EV Basics Master</span></li>
+            <li>Electrical Systems <span class="badge locked" id="badge-electrical">Circuit Specialist</span></li>
+            <li>Battery Management <span class="badge locked" id="badge-battery">Battery Expert</span></li>
+            <li>Motor Mechanics <span class="badge locked" id="badge-motor">Motor Guru</span></li>
+            <li>EV Maintenance & Diagnostics <span class="badge locked" id="badge-maintenance">Repair Pro</span></li>
+            <li>Charging Systems <span class="badge locked" id="badge-charging">Charger Technician</span></li>
+            <li>Safety Protocols <span class="badge locked" id="badge-safety">Safety Champion</span></li>
+            <li>Renewable Energy Context <span class="badge locked" id="badge-renewable">Eco Innovator</span></li>
+        </ul>
     </div>
 
     <!-- Checklist -->
     <div class="section">
         <h2>Checklist</h2>
+        <h3>Courses</h3>
         <ul id="checklist">
-            <li><input type="checkbox" onchange="updateProgress()"> Enroll in EV Intro Course</li>
-            <li><input type="checkbox" onchange="updateProgress()"> Watch 5 YouTube Videos</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="12.5" data-skill="ev-fundamentals"> <a href="https://alison.com/course/diploma-in-electric-vehicle-technology" target="_blank">Diploma in Electric Vehicle Technology (Alison)</a> (12.5 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="18" data-skill="ev-fundamentals"> <a href="https://www.coursera.org/learn/electric-vehicles-mobility" target="_blank">Electric Vehicles and Mobility (Coursera)</a> (18 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="20" data-skill="electrical"> <a href="https://www.coursera.org/learn/electronics" target="_blank">Introduction to Electronics (Coursera)</a> (20 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="21" data-skill="electrical"> <a href="https://www.edx.org/course/electricity-and-magnetism-part-1" target="_blank">Electricity & Magnetism, Part 1 (edX)</a> (21 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="2" data-skill="battery"> <a href="https://alison.com/course/battery-technologies-for-electric-vehicles" target="_blank">Battery Technologies for Electric Vehicles (Alison)</a> (2 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="16" data-skill="maintenance"> <a href="https://www.edx.org/course/electric-cars-technology" target="_blank">Electric Cars: Technology (edX)</a> (16 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="24" data-skill="charging"> <a href="https://onlinecourses.nptel.ac.in/noc20_ee62/preview" target="_blank">Electric Vehicles - Part 1 (NPTEL)</a> (24 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="10" data-skill="renewable"> <a href="https://oli.cmu.edu/courses/principles-of-alternative-renewable-energies/" target="_blank">Principles of Alternative/Renewable Energies (OLI)</a> (10 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="8" data-skill="motor"> <a href="https://oli.cmu.edu/courses/motors-and-controls-for-electric-vehicles/" target="_blank">Motors and Controls for Electric Vehicles (OLI)</a> (8 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="12" data-skill="safety"> <a href="https://oli.cmu.edu/courses/automotive-systems/" target="_blank">Automotive Systems (OLI)</a> (12 hrs)</li>
+            <h3>YouTube Videos</h3>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="0.5" data-skill="ev-fundamentals"> <a href="https://www.youtube.com/watch?v=3SAxXUIreSs" target="_blank">How Electric Cars Work (Engineering Explained)</a> (0.5 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="0.5" data-skill="battery"> <a href="https://www.youtube.com/watch?v=9G5-V8F2c-0" target="_blank">EV Battery Basics (Engineering Explained)</a> (0.5 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="1" data-skill="maintenance"> <a href="https://www.youtube.com/watch?v=PWkEj42041w" target="_blank">Electric Vehicle Maintenance (WeberAuto)</a> (1 hr)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="1" data-skill="maintenance"> <a href="https://www.youtube.com/watch?v=8KQrWnNmkNY" target="_blank">How to Diagnose EV Problems (WeberAuto)</a> (1 hr)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="0.5" data-skill="motor"> <a href="https://www.youtube.com/watch?v=L-DiprTnc0Q" target="_blank">Electric Motor Fundamentals (The Engineering Mindset)</a> (0.5 hrs)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="1" data-skill="charging"> <a href="https://www.youtube.com/watch?v=8J0zANkBLFo" target="_blank">EV Charging Systems Explained (Munro Live)</a> (1 hr)</li>
+            <li><input type="checkbox" onchange="updateProgress()" data-weight="1" data-skill="safety"> <a href="https://www.youtube.com/watch?v=toT6tEaTkhM" target="_blank">High Voltage Safety for EVs (WeberAuto)</a> (1 hr)</li>
         </ul>
     </div>
 
@@ -46,37 +81,6 @@
             <li>Phase 1: Foundation (Feb-May 2025)</li>
             <li>Phase 2: Intermediate (May-Aug 2025)</li>
             <li>Phase 3: Advanced (Aug 2025-Feb 2026)</li>
-        </ul>
-    </div>
-
-    <!-- Course Links -->
-    <div class="section">
-        <h2>Courses</h2>
-        <ul>
-            <li><a href="https://alison.com/course/diploma-in-electric-vehicle-technology" target="_blank">Diploma in Electric Vehicle Technology (Alison)</a></li>
-            <li><a href="https://www.coursera.org/learn/electric-vehicles-mobility" target="_blank">Electric Vehicles and Mobility (Coursera)</a></li>
-            <li><a href="https://www.coursera.org/learn/electronics" target="_blank">Introduction to Electronics (Coursera)</a></li>
-            <li><a href="https://www.edx.org/course/electricity-and-magnetism-part-1" target="_blank">Electricity & Magnetism, Part 1 (edX)</a></li>
-            <li><a href="https://alison.com/course/battery-technologies-for-electric-vehicles" target="_blank">Battery Technologies for Electric Vehicles (Alison)</a></li>
-            <li><a href="https://www.edx.org/course/electric-cars-technology" target="_blank">Electric Cars: Technology (edX)</a></li>
-            <li><a href="https://onlinecourses.nptel.ac.in/noc20_ee62/preview" target="_blank">Electric Vehicles - Part 1 (NPTEL)</a></li>
-            <li><a href="https://oli.cmu.edu/courses/principles-of-alternative-renewable-energies/" target="_blank">Principles of Alternative/Renewable Energies (OLI)</a></li>
-            <li><a href="https://oli.cmu.edu/courses/motors-and-controls-for-electric-vehicles/" target="_blank">Motors and Controls for Electric Vehicles (OLI)</a></li>
-            <li><a href="https://oli.cmu.edu/courses/automotive-systems/" target="_blank">Automotive Systems (OLI)</a></li>
-        </ul>
-    </div>
-
-    <!-- YouTube Videos -->
-    <div class="section">
-        <h2>YouTube Videos</h2>
-        <ul>
-            <li><a href="https://www.youtube.com/watch?v=3SAxXUIreSs" target="_blank">How Electric Cars Work (Engineering Explained)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=9G5-V8F2c-0" target="_blank">EV Battery Basics (Engineering Explained)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=PWkEj42041w" target="_blank">Electric Vehicle Maintenance (WeberAuto)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=8KQrWnNmkNY" target="_blank">How to Diagnose EV Problems (WeberAuto)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=L-DiprTnc0Q" target="_blank">Electric Motor Fundamentals (The Engineering Mindset)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=8J0zANkBLFo" target="_blank">EV Charging Systems Explained (Munro Live)</a></li>
-            <li><a href="https://www.youtube.com/watch?v=toT6tEaTkhM" target="_blank">High Voltage Safety for EVs (WeberAuto)</a></li>
         </ul>
     </div>
 
@@ -107,15 +111,46 @@
     <script>
         let timeStart = 0;
         let totalTime = localStorage.getItem('totalTime') || 0;
+        const totalChecklistHours = 149;
 
-        // Progress Update
+        // Skill-Badge Mapping
+        const skillChecklists = {
+            'ev-fundamentals': [0, 1, 10],
+            'electrical': [2, 3],
+            'battery': [4, 11],
+            'motor': [8, 14],
+            'maintenance': [5, 12, 13],
+            'charging': [6, 15],
+            'safety': [9, 16],
+            'renewable': [7]
+        };
+
+        // Progress and Badge Update
         function updateProgress() {
             const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
-            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-            const total = checkboxes.length;
-            const percent = Math.round((checked / total) * 100);
-            document.getElementById('progressPercent').innerText = `${percent}%`;
+            let completedHours = 0;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    completedHours += parseFloat(cb.getAttribute('data-weight'));
+                }
+            });
+            const percent = Math.round((completedHours / totalChecklistHours) * 100);
+            document.getElementById('progressPercent').innerText = `${percent}% (${completedHours}/${totalChecklistHours} hours)`;
             document.querySelector('.progress').style.width = `${percent}%`;
+
+            // Update Badges
+            Object.keys(skillChecklists).forEach(skill => {
+                const indices = skillChecklists[skill];
+                const allChecked = indices.every(i => checkboxes[i].checked);
+                const badge = document.getElementById(`badge-${skill}`);
+                if (allChecked) {
+                    badge.classList.remove('locked');
+                    badge.classList.add('unlocked');
+                } else {
+                    badge.classList.add('locked');
+                    badge.classList.remove('unlocked');
+                }
+            });
         }
 
         // Task Management
@@ -157,4 +192,4 @@
         }
     </script>
 </body>
-    </html>
+                    </html>
