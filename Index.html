@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Expert Journey</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f4f4; }
+        h1 { text-align: center; color: #333; }
+        .section { margin: 20px 0; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .progress-bar { width: 100%; height: 20px; background: #ddd; border-radius: 10px; }
+        .progress { height: 100%; background: #4caf50; border-radius: 10px; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 10px; border-bottom: 1px solid #eee; }
+        input[type="checkbox"] { margin-right: 10px; }
+        a { color: #007bff; text-decoration: none; }
+        button { padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        #timeLog { margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>EV Expert Journey</h1>
+
+    <!-- Dashboard -->
+    <div class="section">
+        <h2>Dashboard</h2>
+        <p>Progress: <span id="progressPercent">10%</span></p>
+        <div class="progress-bar"><div class="progress" style="width: 10%;"></div></div>
+        <p>Welcome! You're on your way to becoming an EV maintenance expert.</p>
+    </div>
+
+    <!-- Checklist -->
+    <div class="section">
+        <h2>Checklist</h2>
+        <ul id="checklist">
+            <li><input type="checkbox" onchange="updateProgress()"> Enroll in EV Intro Course</li>
+            <li><input type="checkbox" onchange="updateProgress()"> Watch 5 YouTube Videos</li>
+        </ul>
+    </div>
+
+    <!-- Roadmap -->
+    <div class="section">
+        <h2>Roadmap</h2>
+        <ul>
+            <li>Phase 1: Foundation (Feb-May 2025)</li>
+            <li>Phase 2: Intermediate (May-Aug 2025)</li>
+            <li>Phase 3: Advanced (Aug 2025-Feb 2026)</li>
+        </ul>
+    </div>
+
+    <!-- Course Links -->
+    <div class="section">
+        <h2>Courses</h2>
+        <ul>
+            <li><a href="https://alison.com/course/diploma-in-electric-vehicle-technology" target="_blank">Diploma in Electric Vehicle Technology</a></li>
+            <li><a href="https://www.coursera.org/learn/electric-vehicles-mobility" target="_blank">Electric Vehicles and Mobility</a></li>
+        </ul>
+    </div>
+
+    <!-- Tasks -->
+    <div class="section">
+        <h2>Tasks</h2>
+        <input type="text" id="taskInput" placeholder="Add a task">
+        <input type="date" id="taskDate">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <!-- Networking -->
+    <div class="section">
+        <h2>Networking</h2>
+        <p>Local: NUST, F-10 Mechanics</p>
+        <p>Online: <a href="https://x.com/explore" target="_blank">X #EVMaintenance</a></p>
+    </div>
+
+    <!-- Time Tracker -->
+    <div class="section">
+        <h2>Time Tracker</h2>
+        <button onclick="startTimer()">Start</button>
+        <button onclick="stopTimer()">Stop</button>
+        <p id="timeLog">Time Spent: 0 seconds</p>
+    </div>
+
+    <script>
+        let timeStart = 0;
+        let totalTime = localStorage.getItem('totalTime') || 0;
+
+        // Progress Update
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('#checklist input[type="checkbox"]');
+            const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+            const total = checkboxes.length;
+            const percent = Math.round((checked / total) * 100);
+            document.getElementById('progressPercent').innerText = `${percent}%`;
+            document.querySelector('.progress').style.width = `${percent}%`;
+        }
+
+        // Task Management
+        function addTask() {
+            const taskInput = document.getElementById('taskInput').value;
+            const taskDate = document.getElementById('taskDate').value;
+            if (!taskInput || !taskDate) return;
+            const li = document.createElement('li');
+            li.innerHTML = `<input type="checkbox"> ${taskInput} (Due: ${taskDate})`;
+            document.getElementById('taskList').appendChild(li);
+            scheduleNotification(taskInput, new Date(taskDate).getTime());
+            document.getElementById('taskInput').value = '';
+            document.getElementById('taskDate').value = '';
+        }
+
+        // Time Tracker
+        function startTimer() { timeStart = Date.now(); }
+        function stopTimer() {
+            if (timeStart) {
+                const timeSpent = Math.floor((Date.now() - timeStart) / 1000);
+                totalTime = parseInt(totalTime) + timeSpent;
+                localStorage.setItem('totalTime', totalTime);
+                document.getElementById('timeLog').innerText = `Time Spent: ${totalTime} seconds`;
+                timeStart = 0;
+            }
+        }
+
+        // Real-Time Notifications
+        function scheduleNotification(task, dueTime) {
+            if (Notification.permission === "granted") {
+                setTimeout(() => {
+                    new Notification(`Task Due: ${task}`);
+                }, dueTime - Date.now());
+            } else if (Notification.permission !== "denied") {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") scheduleNotification(task, dueTime);
+                });
+            }
+        }
+    </script>
+</body>
+</html>
